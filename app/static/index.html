@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <title>Campus Office | Student directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Campus Office home">
+          <span class="brand-mark">co</span>
+          <span class="brand-copy"><strong>Campus Office</strong><small>STUDENT RECORDS</small></span>
+        </a>
+
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="primary-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#directory" aria-current="page">
+            <i data-lucide="contact-round"></i><span>Directory</span>
+          </a>
+          <a class="nav-link" href="#courses">
+            <i data-lucide="library-big"></i><span>Courses</span>
+          </a>
+          <a class="nav-link" href="/docs" target="_blank" rel="noreferrer">
+            <i data-lucide="braces"></i><span>API reference</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="workspace-mark"><span class="workspace-dot"></span><span>LOCAL WORKSPACE</span></div>
+          <div class="sidebar-note">A considered home for student records.</div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="directory">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>REGISTRAR</span><i data-lucide="chevron-right"></i><strong>STUDENTS</strong></div>
+          <div class="topbar-right"><span class="today" id="today"></span><span class="user-avatar" aria-label="Registrar">R</span></div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">PEOPLE &amp; ENROLLMENT</p>
+            <h1>Student directory</h1>
+            <p class="page-subtitle">The people behind every class.</p>
+          </div>
+          <button class="button button-primary" id="add-student" type="button">
+            <i data-lucide="plus"></i><span>Add student</span>
+          </button>
+        </section>
+
+        <section class="metrics" aria-label="Student overview">
+          <article class="metric metric-total">
+            <div class="metric-top"><span>Total students</span><i data-lucide="users-round"></i></div>
+            <div class="metric-value" id="total-students">0</div>
+            <div class="metric-foot">In the directory</div>
+          </article>
+          <article class="metric">
+            <div class="metric-top"><span>Courses represented</span><i data-lucide="book-open-check"></i></div>
+            <div class="metric-value" id="course-count">0</div>
+            <div class="metric-foot">Distinct courses</div>
+          </article>
+          <article class="metric">
+            <div class="metric-top"><span>Enrolled this month</span><i data-lucide="calendar-days"></i></div>
+            <div class="metric-value" id="month-count">0</div>
+            <div class="metric-foot" id="month-label">New enrollment dates</div>
+          </article>
+          <article class="metric metric-contact">
+            <div class="metric-top"><span>Contact details</span><i data-lucide="at-sign"></i></div>
+            <div class="metric-value"><span id="contact-rate">0</span><span class="metric-percent">%</span></div>
+            <div class="metric-foot">Records with an email address</div>
+          </article>
+        </section>
+
+        <section class="ask-panel panel" aria-labelledby="ask-title">
+          <div class="ask-heading">
+            <span class="ask-icon"><i data-lucide="sparkles"></i></span>
+            <div><p class="eyebrow">LOCAL AI</p><h2 id="ask-title">Ask the directory</h2></div>
+          </div>
+          <form class="ask-form" id="ask-form">
+            <label class="sr-only" for="ask-question">Question about student records</label>
+            <input id="ask-question" name="question" type="text" minlength="3" maxlength="500" placeholder="How many students are enrolled in AI &amp; ML?" required>
+            <button class="button button-primary" id="ask-submit" type="submit"><i data-lucide="arrow-up"></i><span>Ask</span></button>
+          </form>
+          <div class="ask-result" id="ask-result" aria-live="polite" hidden>
+            <p class="ask-answer" id="ask-answer"></p>
+            <p class="ask-meta" id="ask-meta"></p>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <section class="directory-panel panel" aria-labelledby="directory-title">
+            <div class="panel-heading directory-heading">
+              <div>
+                <p class="eyebrow">ALL RECORDS</p>
+                <h2 id="directory-title">Students <span class="count-pill" id="visible-count">0</span></h2>
+              </div>
+              <button class="icon-button refresh-button" id="refresh" type="button" title="Refresh records" aria-label="Refresh records">
+                <i data-lucide="rotate-cw"></i>
+              </button>
+            </div>
+
+            <div class="table-tools">
+              <label class="search-box">
+                <i data-lucide="search"></i>
+                <input id="search" type="search" placeholder="Search students or courses" autocomplete="off" aria-label="Search students or courses">
+              </label>
+              <label class="select-wrap">
+                <i data-lucide="list-filter"></i>
+                <select id="course-filter" aria-label="Filter by course"><option value="">All courses</option></select>
+              </label>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>STUDENT</th><th>COURSE</th><th>ENROLLED</th><th>CONTACT</th><th><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody id="student-rows"></tbody>
+              </table>
+              <div class="empty-state" id="empty-state" hidden>
+                <span class="empty-icon"><i data-lucide="notebook-tabs"></i></span>
+                <h3 id="empty-title">No students yet</h3>
+                <p id="empty-copy">The directory is ready for its first record.</p>
+                <button class="button button-secondary" id="empty-add" type="button"><i data-lucide="plus"></i><span>Add a student</span></button>
+              </div>
+            </div>
+            <div class="table-footer"><span id="table-summary">Showing 0 students</span><span>Campus Office <span class="footer-dot">/</span> Directory</span></div>
+          </section>
+
+          <aside class="course-panel panel" id="courses" aria-labelledby="courses-title">
+            <div class="panel-heading course-heading">
+              <div><p class="eyebrow">A QUICK LOOK</p><h2 id="courses-title">Course mix</h2></div>
+              <span class="course-heading-icon"><i data-lucide="chart-no-axes-column-increasing"></i></span>
+            </div>
+            <p class="course-intro">Students by course</p>
+            <div class="course-list" id="course-list"></div>
+            <div class="course-empty" id="course-empty" hidden>No course information yet.</div>
+            <div class="course-note"><span class="note-spark">✳</span><span>Every student has a place to grow.</span></div>
+          </aside>
+        </section>
+
+        <footer class="page-footer"><span>Campus Office</span><span>Student records, kept in good order.</span></footer>
+      </main>
+    </div>
+
+    <dialog class="student-dialog" id="student-dialog" aria-labelledby="dialog-title">
+      <form id="student-form" novalidate>
+        <div class="dialog-heading">
+          <div><p class="eyebrow" id="dialog-eyebrow">NEW RECORD</p><h2 id="dialog-title">Add a student</h2></div>
+          <button class="icon-button" id="close-dialog" type="button" title="Close" aria-label="Close"><i data-lucide="x"></i></button>
+        </div>
+        <p class="dialog-intro">A few details to get the record started.</p>
+        <div class="form-grid">
+          <label class="field field-wide"><span>Full name <b>*</b></span><input name="name" required minlength="2" maxlength="100" placeholder="e.g. Meera Nair" autocomplete="name"></label>
+          <label class="field"><span>Date of birth <b>*</b></span><input name="date_of_birth" type="date" required></label>
+          <label class="field"><span>Course</span><input name="course" maxlength="100" placeholder="e.g. Data Science"></label>
+          <label class="field"><span>Email</span><input name="email" type="email" placeholder="student@example.com" autocomplete="email"></label>
+          <label class="field"><span>Phone</span><input name="phone" type="tel" pattern="\+?[0-9\- ]{7,15}" placeholder="+91 90000 00000" autocomplete="tel"></label>
+          <label class="field"><span>Enrollment date</span><input name="enrollment_date" type="date"></label>
+          <label class="field field-wide"><span>Address</span><input name="address" maxlength="255" placeholder="City, region" autocomplete="street-address"></label>
+        </div>
+        <p class="form-hint">Add an email address or phone number.</p>
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+        <div class="dialog-actions">
+          <button class="button button-quiet" id="cancel-dialog" type="button">Cancel</button>
+          <button class="button button-primary" id="save-student" type="submit"><span>Save record</span><i data-lucide="arrow-right"></i></button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
