@@ -174,15 +174,26 @@ The tests use a separate `test_students.db` database and mock the AI response; t
 ## Project Structure
 
 ```text
-app/
-  ai.py          Ollama prompt construction and local model request
-  crud.py        Student database operations
-  database.py    SQLite engine and database sessions
-  main.py        FastAPI routes and application setup
-  models.py      SQLAlchemy student model
-  schemas.py     Request validation and response schemas
-  static/        Dashboard HTML, CSS, and JavaScript
-seed_data.py     Optional fictional sample records
-requirements.txt Python dependencies
-tests/          Automated API and validation tests
+
+project-root/
+│
+├── app/
+│   ├── ai.py             # Ollama prompt construction and local model requests
+│   ├── crud.py           # Student database operations
+│   ├── database.py       # SQLite engine and database sessions
+│   ├── main.py           # FastAPI routes and application setup
+│   ├── models.py         # SQLAlchemy student model
+│   ├── schemas.py        # Request validation and response schemas
+│   │
+│   └── static/
+│       ├── index.html    # Dashboard interface
+│       ├── style.css     # Dashboard styling
+│       └── script.js     # Dashboard functionality
+│
+├── tests/                # Automated API and validation tests
+│
+├── seed_data.py          # Optional fictional sample records
+├── requirements.txt      # Python dependencies
+└── README.md             # Project documentation
+
 ```
