@@ -60,9 +60,9 @@ Keep this terminal open while using the application. Uvicorn reloads the server 
 
 Open these pages in a browser:
 
-- Dashboard: http://127.0.0.1:8000/
-- Interactive API documentation: http://127.0.0.1:8000/docs
-- Alternative API documentation: http://127.0.0.1:8000/redoc
+- Dashboard: https://students-database-curd-api.vercel.app/
+- - Interactive API documentation: http://127.0.0.1:8000/docs
+- Alternative API documentation: [http://127.0.0.1:8000/redoc](https://students-database-curd-api.vercel.app/docs)
 
 The application creates `students.db` and its tables automatically on startup. Existing records remain in that database between runs.
 
